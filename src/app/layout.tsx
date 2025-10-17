@@ -1,34 +1,41 @@
-import { Inter as FontSans } from "next/font/google"
+import type { Metadata } from "next";
+import { Geist } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { cn } from "@/lib/utils";
 
-const defaultUrl = process.env.NEXT_PUBLIC_URL as string || "http://localhost:3000";
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
-
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Basejump starter kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "CarGuys Inc. Resume Qualifier",
+  description: "Sort resumes based on job-specific criteria.",
 };
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  display: "swap",
+  subsets: ["latin"],
+});
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className={cn(
-      "min-h-screen bg-background font-sans antialiased",
-      fontSans.variable
-    )}>
-      <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+
           {children}
-        </main>
+        </ThemeProvider>
       </body>
     </html>
   );
