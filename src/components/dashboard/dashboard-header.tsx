@@ -19,7 +19,9 @@ export default function DashboardHeader({ accountId, navigation = [] }: Props) {
         <nav className="w-full p-4 flex justify-between items-center border-b">
             <div className="justify-start items-center gap-x-4 lg:gap-x-6 hidden md:flex">
                 <div className="flex items-center gap-x-4">
-                    <Link href="/"><BasejumpLogo logoOnly /></Link>
+                    <Link href="/">
+                    <h1>AppiTrak</h1>
+                    </Link>
                     <span className="border-l rotate-12 h-6" />
                     <NavigatingAccountSelector accountId={accountId} />
                 </div>
