@@ -10,25 +10,20 @@ export default async function DashboardRedirect() {
 
   console.log("User:", user);
 
-  // Step 1: get the personal account for the logged-in user
-const { data: personalAccount } = await supabase
-  .from("basejump.account_user")
+const { data: accountUser } = console.log(await supabase
+  .from("account_user")
   .select(`
     account_id,
     account_role,
-    accounts(
-      id,
-      slug,
-      parent_account_id,
-      account_type,
-      name
-    )
+    team_id,
+    accounts(id, slug, account_type, name),
+    teams(id, name, slug)
   `)
   .eq("user_id", user.id)
-  .maybeSingle();
+  .maybeSingle()
+)
 
-  console.log("Personal Account:", personalAccount);
-
+console.log("Account User:", accountUser);
 if (!personalAccount) redirect("/setup");
 
 // Step 2: determine the team account
