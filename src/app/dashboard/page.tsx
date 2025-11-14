@@ -16,9 +16,16 @@ const { data: companyUser, error } = await supabase
   .maybeSingle();
 if (error) console.error(error)
 
-  console.log(companyUser)
+  console.log("success", companyUser)
 
 if (!companyUser) redirect("/setup");
 
-redirect(`/dashboard/${companyUser.companies.slug}`);
+switch (companyUser.companies.account_type) {
+  case 'admin':
+    redirect(`/dashboard/admin/${companyUser.companies.slug}`);
+  case 'recruiter':
+    redirect(`/dashboard/recruiter/${companyUser.companies.slug}`);
+  default:
+}
+
 }

@@ -1,10 +1,9 @@
 import {createClient} from "@/lib/supabase/server";
-import AccountBillingStatus from "@/components/basejump/account-billing-status";
+import ManageTeamMembers from "@/components/basejump/manage-team-members";
+import ManageTeamInvitations from "@/components/basejump/manage-team-invitations";
 import { Alert } from "@/components/ui/alert";
 
-const returnUrl = process.env.NEXT_PUBLIC_URL as string;
-
-export default async function TeamBillingPage({params: {accountSlug}}: {params: {accountSlug: string}}) {
+export default async function TeamMembersPage({params: {accountSlug}}: {params: {accountSlug: string}}) {
     const supabaseClient = await createClient();
     const {data: teamAccount} = await supabaseClient.rpc('get_account_by_slug', {
         slug: accountSlug
@@ -16,10 +15,10 @@ export default async function TeamBillingPage({params: {accountSlug}}: {params: 
         )
     }
 
-
     return (
-        <div>
-            <AccountBillingStatus accountId={teamAccount.account_id} returnUrl={`${returnUrl}/dashboard/${accountSlug}/settings/billing`} />
+        <div className="flex flex-col gap-y-8">
+            <ManageTeamInvitations accountId={teamAccount.account_id} />
+            <ManageTeamMembers accountId={teamAccount.account_id} />
         </div>
     )
 }

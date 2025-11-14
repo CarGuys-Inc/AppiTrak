@@ -15,7 +15,17 @@ import {redirect} from "next/navigation";
 
 export default async function UserAccountButton() {
     const supabaseClient = await createClient();
-    const {data: personalAccount} = await supabaseClient.rpc('get_personal_account');
+const { data: { user } } = await supabaseClient.auth.getUser();
+
+const { data: profile, error } = await supabaseClient
+  .schema('basejump')
+  .from("profiles")
+  .select("full_name")
+  .eq("id", user.id)
+  .maybeSingle();
+if (error) console.error(error)
+
+console.log("user account button user", user)
 
     const signOut = async () => {
         'use server'
@@ -35,9 +45,9 @@ export default async function UserAccountButton() {
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{personalAccount.name}</p>
+                        <p className="text-sm font-medium leading-none">{profile.full_name}</p>
                         <p className="text-xs leading-none text-muted-foreground">
-                            {personalAccount.email}
+                            {user.email}
                         </p>
                     </div>
                 </DropdownMenuLabel>

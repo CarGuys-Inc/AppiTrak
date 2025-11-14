@@ -4,6 +4,8 @@ import BasejumpLogo from "@/components/getting-started/basejump-logo";
 import NavigatingAccountSelector from "@/components/dashboard/navigation-account-selector";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { Menu } from "lucide-react";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+
 
 
 interface Props {
@@ -53,6 +55,7 @@ export default function DashboardHeader({ accountId, navigation = [] }: Props) {
             </Sheet>
 
             <div className="flex items-center gap-x-4">
+                <ThemeSwitcher />
                 <UserAccountButton />
             </div>
         </nav>

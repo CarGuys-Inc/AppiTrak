@@ -5,10 +5,19 @@ import { redirect } from "next/navigation";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter
+} from "@/components/ui/card";
+
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message: string, returnUrl?: string };
+  searchParams: { message: string; returnUrl?: string };
 }) {
   const signIn = async (_prevState: any, formData: FormData) => {
     "use server";
@@ -19,11 +28,13 @@ export default function Login({
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     });
 
     if (error) {
-      return redirect(`/login?message=Could not authenticate user&returnUrl=${searchParams.returnUrl}`);
+      return redirect(
+        `/login?message=Could not authenticate user&returnUrl=${searchParams.returnUrl}`
+      );
     }
 
     return redirect(searchParams.returnUrl || "/dashboard");
@@ -46,17 +57,22 @@ export default function Login({
     });
 
     if (error) {
-      return redirect(`/login?message=Could not authenticate user&returnUrl=${searchParams.returnUrl}`);
+      return redirect(
+        `/login?message=Could not authenticate user&returnUrl=${searchParams.returnUrl}`
+      );
     }
 
-    return redirect(`/login?message=Check email to continue sign in process&returnUrl=${searchParams.returnUrl}`);
+    return redirect(
+      `/login?message=Check email to continue sign in process&returnUrl=${searchParams.returnUrl}`
+    );
   };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+    <div className="flex items-center justify-center min-h-screen px-4">
+      {/* Back Button */}
       <Link
         href="/"
-        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
+        className="absolute left-8 top-8 py-2 px-4 rounded-md text-foreground bg-muted hover:bg-muted/70 flex items-center group text-sm"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -75,43 +91,65 @@ export default function Login({
         Back
       </Link>
 
-      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <Input
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <Input
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
-        <SubmitButton
-          formAction={signIn}
-          pendingText="Signing In..."
-        >
-          Sign In
-        </SubmitButton>
-        <SubmitButton
-          formAction={signUp}
-          variant="outline"
-          pendingText="Signing Up..."
-        >
-          Sign Up
-        </SubmitButton>
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {searchParams.message}
-          </p>
-        )}
-      </form>
+      <Card className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-center">
+            Welcome Back
+          </CardTitle>
+          <CardDescription className="text-center">
+            Use your email and password to sign in.
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <form className="flex flex-col gap-4 text-foreground">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium" htmlFor="email">
+                Email
+              </label>
+              <Input
+                name="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium" htmlFor="password">
+                Password
+              </label>
+              <Input
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <SubmitButton formAction={signIn} pendingText="Signing In...">
+              Sign In
+            </SubmitButton>
+
+            <SubmitButton
+              formAction={signUp}
+              variant="outline"
+              pendingText="Signing Up..."
+            >
+              Sign Up
+            </SubmitButton>
+
+            {searchParams?.message && (
+              <p className="mt-2 p-3 rounded-md bg-destructive/10 text-destructive text-center text-sm">
+                {searchParams.message}
+              </p>
+            )}
+          </form>
+        </CardContent>
+
+        <CardFooter className="text-center text-sm text-muted-foreground">
+          By continuing, you agree to our Terms & Privacy Policy.
+        </CardFooter>
+      </Card>
     </div>
   );
 }

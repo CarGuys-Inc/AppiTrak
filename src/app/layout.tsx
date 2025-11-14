@@ -9,8 +9,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "CarGuys Inc. Resume Qualifier",
-  description: "Sort resumes based on job-specific criteria.",
+  title: "AppiTrak",
+  description: "World Class Recruitment Software",
 };
 
 const geistSans = Geist({
