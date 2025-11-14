@@ -4,10 +4,8 @@ import { Alert } from "@/components/ui/alert";
 
 const returnUrl = process.env.NEXT_PUBLIC_URL as string;
 
-export default async function TeamBillingPage(props: {
-  params: { accountSlug: string };
-}) {
-  const { accountSlug } = props.params;
+export default async function TeamBillingPage({ params }) {
+  const { accountSlug } = params;
 
   const supabaseClient = await createClient();
   const { data: teamAccount, error } = await supabaseClient.rpc(
