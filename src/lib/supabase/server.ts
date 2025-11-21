@@ -3,7 +3,8 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export async function createClient() {
-  const cookieStore = cookies(); // must be inside async function
+  // ✅ MUST be awaited in Next.js 15+
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,18 +14,25 @@ export async function createClient() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
+
         set(name: string, value: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value, ...options });
           } catch {
-            // ignore when called from Server Component
+            // Ignore during Server Component static generation
           }
         },
+
         remove(name: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value: "", ...options });
+            cookieStore.set({
+              name,
+              value: "",
+              ...options,
+              maxAge: 0,        // ✅ proper delete behavior
+            });
           } catch {
-            // ignore when called from Server Component
+            // Ignore during Server Component static generation
           }
         },
       },

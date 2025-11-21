@@ -3,7 +3,9 @@ import ManageTeamMembers from "@/components/basejump/manage-team-members";
 import ManageTeamInvitations from "@/components/basejump/manage-team-invitations";
 import { Alert } from "@/components/ui/alert";
 
-export default async function TeamMembersPage({params: {accountSlug}}: {params: {accountSlug: string}}) {
+export default async function TeamMembersPage(props) {
+    const {params} = props;
+    const {accountSlug} = params;
     const supabaseClient = await createClient();
     const {data: teamAccount} = await supabaseClient.rpc('get_account_by_slug', {
         slug: accountSlug

@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import DashboardShell from "@/components/dashboard/dashboard-shell";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
-export default async function DashboardLayout({ children, params }) {
+export default async function DashboardLayout(props) {
+  const { children, params } = props;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");

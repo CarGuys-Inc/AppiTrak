@@ -25,8 +25,6 @@ const { data: profile, error } = await supabaseClient
   .maybeSingle();
 if (error) console.error(error)
 
-console.log("user account button user", user)
-
     const signOut = async () => {
         'use server'
 

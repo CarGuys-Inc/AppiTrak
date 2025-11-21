@@ -2,7 +2,9 @@ import SettingsNavigation from "@/components/dashboard/settings-navigation";
 import DashboardTitle from "@/components/dashboard/dashboard-title";
 import {Separator} from "@/components/ui/separator";
 
-export default function TeamSettingsPage({children, params: {accountSlug}}: {children: React.ReactNode, params: {accountSlug: string}}) {
+export default function TeamSettingsPage(props) {
+    const {children, params} = props;
+    const {accountSlug} = params;
     const items = [
         { name: "Account", href: `/dashboard/${accountSlug}/settings` },
         { name: "Members", href: `/dashboard/${accountSlug}/settings/members` },

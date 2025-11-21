@@ -14,11 +14,8 @@ import {
   CardFooter
 } from "@/components/ui/card";
 
-export default function Login({
-  searchParams,
-}: {
-  searchParams: { message: string; returnUrl?: string };
-}) {
+export default function Login(props) {
+  const { searchParams } = props;
   const signIn = async (_prevState: any, formData: FormData) => {
     "use server";
 
