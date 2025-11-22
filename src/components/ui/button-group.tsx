@@ -41,10 +41,10 @@ function ButtonGroupText({
   className,
   asChild = false,
   ...props
-}: React.ComponentProps<"div"> & {
+}: React.ComponentPropsWithoutRef<"div"> & {
   asChild?: boolean
 }) {
-  const Comp = asChild ? Slot : "div"
+  const Comp: any = asChild ? Slot : "div"
 
   return (
     <Comp
@@ -52,7 +52,7 @@ function ButtonGroupText({
         "bg-muted shadow-xs flex items-center gap-2 rounded-md border px-4 text-sm font-medium [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
         className
       )}
-      {...props}
+      {...(props as any)}
     />
   )
 }

@@ -20,11 +20,20 @@ if (error) console.error(error)
 
 if (!companyUser) redirect("/setup");
 
-switch (companyUser.companies.account_type) {
+// companies can be returned as an array; pick the first item or use the object directly
+const company = Array.isArray(companyUser.companies)
+  ? companyUser.companies[0]
+  : companyUser.companies;
+
+if (!company) redirect("/setup");
+
+switch (company.account_type) {
   case 'admin':
-    redirect(`/dashboard/admin/${companyUser.companies.slug}`);
+    redirect(`/dashboard/admin/${company.slug}`);
+    break;
   case 'recruiter':
-    redirect(`/dashboard/recruiter/${companyUser.companies.slug}`);
+    redirect(`/dashboard/recruiter/${company.slug}`);
+    break;
   default:
 }
 

@@ -19,7 +19,14 @@ export default async function DashboardLayout(props) {
 
   if (!companyUser) redirect("/setup");
 
-  const slug = companyUser.companies.slug;
+  const company = Array.isArray(companyUser.companies)
+    ? companyUser.companies[0]
+    : companyUser.companies;
+
+  const slug = company?.slug;
+
+  // If there is no company or slug, send user to setup
+  if (!company || !slug) redirect("/setup");
 
   // If URL slug is wrong, fix it
   if (params.accountSlug !== slug) {
@@ -34,19 +41,17 @@ export default async function DashboardLayout(props) {
   return (
     <>
       <DashboardHeader
-  accountId={companyUser.companies.id}
-  navigation={navigation}
-  role={companyUser.companies.role}
-  accountType={companyUser.companies.account_type}
-/>
-    <DashboardShell
-      user={user}
-      company={companyUser.companies}
-      role={companyUser.role}
-      navigation={navigation}
-    >
-      {children}
-    </DashboardShell>
+        accountId={companyUser.company_id}
+        navigation={navigation}
+      />
+      <DashboardShell
+        user={user}
+        company={company}
+        role={companyUser.role}
+        navigation={navigation}
+      >
+        {children}
+      </DashboardShell>
     </>
   );
 }

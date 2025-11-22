@@ -17,6 +17,11 @@ export default async function UserAccountButton() {
     const supabaseClient = await createClient();
 const { data: { user } } = await supabaseClient.auth.getUser();
 
+if (!user || !user.id) {
+  // No authenticated user — redirect to home (or show a fallback UI)
+  redirect('/');
+}
+
 const { data: profile, error } = await supabaseClient
   .schema('basejump')
   .from("profiles")
@@ -43,7 +48,7 @@ if (error) console.error(error)
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{profile.full_name}</p>
+                        <p className="text-sm font-medium leading-none">{profile?.full_name ?? 'Unknown user'}</p>
                         <p className="text-xs leading-none text-muted-foreground">
                             {user.email}
                         </p>
