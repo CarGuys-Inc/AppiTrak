@@ -1,5 +1,5 @@
 // lib/getCurrentAccount.ts
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export async function getCurrentAccount() {
   const supabase = await createClient();
@@ -18,9 +18,13 @@ export async function getCurrentAccount() {
 
   if (!accountUser) return null;
 
+  const accountType = Array.isArray(accountUser.accounts)
+    ? accountUser.accounts[0]?.account_type ?? null
+    : (accountUser.accounts as any)?.account_type ?? null;
+
   return {
     user,
     account_id: accountUser.account_id,
-    account_type: accountUser.accounts.account_type,
+    account_type: accountType,
   };
 }
